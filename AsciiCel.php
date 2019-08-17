@@ -4,7 +4,7 @@ namespace com\github\tncrazvan\AsciiTable;
 
 class AsciiCel{
     private $numberOfLines = 0;
-    private $width;
+    private $width=0;
     private $height;
     private $top;
     private $bottom;
@@ -12,8 +12,7 @@ class AsciiCel{
     private $data = [];
     private $originalString;
     private $options = [
-        "width" => 0,
-        "max-width" => 15,
+        "width" => 30,
         "padding-left" => 1,
         "padding-right" => 1,
         "padding-top" => 0,
@@ -21,33 +20,26 @@ class AsciiCel{
         "padding-between-lines-top" => 0,
         "padding-between-lines-bottom" => 0
     ];
+    public function &getOptions():array{
+        return $this->options;
+    }
     public function __construct(string $data,array &$options=[]){
         $data = \preg_replace("/\\t/",\str_repeat(" ",4),$data);
-        $data = \preg_replace("/\\r/",'',$data);
         $this->originalString = $data;
         foreach($options as $key => &$value){
             $this->options[$key] = $value;
         }
         $this->parseOptions();
         $this->data = [];
-        $length = strlen($data);
-        if($length > $this->options["max-width"]){
-            $string = "";
-            $position = 0;
-            for($i=0;$i < $length; $i++){
-                $position = $i % $this->options["max-width"];
-                if($position+1 > $this->width)
-                    $this->width = $position+1;
-                if($i > 0 && $position === 0){
-                    $this->data[] = $string;
-                    $string = "";
-                }
-                $string .= $data[$i];
-            }
-            $this->data[] = $string;
-        }else{
-            $this->data[] = $data;
-        }
+        $lines = preg_split('/\n/',$data);
+        $numberOfLines = count($lines);
+        $length = 0;
+        for($i=0;$i < $numberOfLines; $i++){
+            $length = strlen($lines[$i]);
+            $this->data[] = $lines[$i];
+            if($this->width < $length)
+                $this->width = $length;
+        };
     }
 
     public function getHeight():int{
@@ -105,23 +97,23 @@ class AsciiCel{
         
         $this->top = str_repeat("-",$this->width);
         $this->bottom = str_repeat("-",$this->width);
-        $this->spacer = str_repeat(" ",$this->width);
+        $this->empty = str_repeat(" ",$this->width);
 
         $this->insertLineInTmp($this->top,$tmp,"+",true,true);
         for($j=0;$j<$this->options["padding-top"];$j++){
-            $this->insertLineInTmp($this->spacer,$tmp,"|",true,true);
+            $this->insertLineInTmp($this->empty,$tmp,"|",true,true);
         }
         for($i=0;$i<$length;$i++){
             for($j=0;$j<$this->options["padding-between-lines-top"];$j++){
-                $this->insertLineInTmp($this->spacer,$tmp,"|",true,true);
+                $this->insertLineInTmp($this->empty,$tmp,"|",true,true);
             }
             $this->insertLineInTmp($this->data[$i],$tmp);
             for($j=0;$j<$this->options["padding-between-lines-bottom"];$j++){
-                $this->insertLineInTmp($this->spacer,$tmp,"|",true,true);
+                $this->insertLineInTmp($this->empty,$tmp,"|",true,true);
             }
         }
         for($j=0;$j<$this->options["padding-bottom"];$j++){
-            $this->insertLineInTmp($this->spacer,$tmp,"|",true,true);
+            $this->insertLineInTmp($this->empty,$tmp,"|",true,true);
         }
         $this->insertLineInTmp($this->bottom,$tmp,"+",true,true);
         return $tmp;
@@ -135,8 +127,8 @@ class AsciiCel{
             }
             return;
         }
-        $paddingLeft = str_repeat($extendFirstCharacter?$data[0]:" ",$this->options["padding-left"]);
-        $paddingRight = str_repeat($extendRightCharacter?$data[-1]:" ",$this->options["padding-right"]);
+        $paddingLeft = str_repeat(isset($data[0]) && $extendFirstCharacter?$data[0]:" ",$this->options["padding-left"]);
+        $paddingRight = str_repeat(isset($data[-1]) && $extendRightCharacter?$data[-1]:" ",$this->options["padding-right"]);
         $len = strlen($data);
         if($len > $this->width){
             $this->width = $len;

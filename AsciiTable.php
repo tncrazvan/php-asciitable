@@ -16,20 +16,31 @@ class AsciiTable{
         foreach($strings as &$string){
             $cels[] = new AsciiCel($string,$this->options);
         }
-        $row = new AsciiRow(...$cels);
+        $row = new AsciiRow($this->options,...$cels);
         $this->rows[] = $row;
     }
 
-    public function toString():string{
+    public function toString(bool $countLines = false):string{
         $this->findRowWithMostCels();
         $this->fixWidths();
         $result="";
         $numberOfRows = count($this->rows);
         for($i=0;$i<$numberOfRows;$i++){
-            if($i>0)
-                $result .= preg_replace('/^.+\n/', '', $this->rows[$i]->toString())."\n";
-            else
-                $result .= $this->rows[$i]->toString()."\n";
+            if($i>0){
+                $result .= preg_replace('/^.+\n/', '', $this->rows[$i]->toString()).($i+1 === $numberOfRows?"":"\n");
+            }else{
+                $result .= $this->rows[$i]->toString().($i+1 === $numberOfRows?"":"\n");
+            }
+        }
+        if($countLines){
+            $tmp = preg_split('/\n/',$result);
+            $length = count($tmp);
+            $result = "";
+
+            for($i=0;$i<$length;$i++){
+                $tmp[$i] = $tmp[$i]." <= [$i]";
+            }
+            $result = implode("\n",$tmp);
         }
         return $result;
     }

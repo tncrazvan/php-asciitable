@@ -6,8 +6,9 @@ class AsciiRow{
     private $cels = [];
     private $height;
     private $width = 0;
-    public function __construct(AsciiCel ...$cels){
-        $length = count($cels);
+    private $options;
+    public function __construct(array &$options,AsciiCel ...$cels){
+        $this->options = $options;
         $this->cels = $cels;
         $this->resolveHeight();
         $this->resolveWidth();
@@ -52,6 +53,9 @@ class AsciiRow{
         return count($this->cels);
     }
     public function getCel(int $index):AsciiCel{
+        if(!isset($this->cels[$index])){
+            $this->cels[$index] = new AsciiCel("",$this->options);
+        }
         return $this->cels[$index];
     }
 
@@ -65,6 +69,7 @@ class AsciiRow{
                 $this->cels[$j] = new AsciiCel(
                                     $this->cels[$j]->getOriginalString()
                                     .str_repeat("\n",$this->height-$numberOfLines)
+                                    ,$this->cels[$j]->getOPtions()
                                 );
             }
         }
