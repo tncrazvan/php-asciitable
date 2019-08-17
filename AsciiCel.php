@@ -12,7 +12,7 @@ class AsciiCel{
     private $data = [];
     private $originalString;
     private $options = [
-        "width" => 30,
+        "width" => 100,
         "padding-left" => 1,
         "padding-right" => 1,
         "padding-top" => 0,
@@ -23,7 +23,7 @@ class AsciiCel{
     public function &getOptions():array{
         return $this->options;
     }
-    public function __construct(string $data,array &$options=[]){
+    public function __construct(string $data,array $options=[]){
         $data = \preg_replace("/\\t/",\str_repeat(" ",4),$data);
         $this->originalString = $data;
         foreach($options as $key => &$value){
@@ -32,9 +32,19 @@ class AsciiCel{
         $this->parseOptions();
         $this->data = [];
         $lines = preg_split('/\n/',$data);
-        $numberOfLines = count($lines);
+        
+        for($i=0,$end=count($lines)-1;$i<=$end;$i++){
+            if(strlen($lines[$i]) > $this->options["width"]){
+                $lines[$i] = str_split($lines[$i],$this->options["width"]);
+            }
+        }
+
+        //flatten $lines array
+        array_walk_recursive($lines, function($a) use (&$flatten) { $flatten[] = $a; });
+        $lines = $flatten;
+
         $length = 0;
-        for($i=0;$i < $numberOfLines; $i++){
+        for($i=0,$end=count($lines)-1;$i<=$end; $i++){
             $length = strlen($lines[$i]);
             $this->data[] = $lines[$i];
             if($this->width < $length)

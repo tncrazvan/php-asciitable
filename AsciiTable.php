@@ -7,17 +7,33 @@ class AsciiTable{
     private $numberOfCols=0;
     private $masterRow;
     private $options;
+    private $width=null;
+    private $styles = [];
     public function __construct(array $options=[]){
         $this->options = $options;
     }
 
-    public function add(string ...$strings):void{
+    public function style(int $index, array $options):void{
+        $this->styles[$index] = $options;
+    }
+
+    public function getWidth():int{
+        return $this->width;
+    }
+
+    public function add(...$inputCels):void{
         $cels = [];
-        foreach($strings as &$string){
-            $cels[] = new AsciiCel($string,$this->options);
+        for($i=0,$end=count($inputCels)-1;$i<=$end;$i++){
+            if($inputCels[$i] instanceof AsciiCel){
+                $cels[] = $inputCels[$i];
+            }else{
+                $cels[] = new AsciiCel($inputCels[$i],isset($this->styles[$i])?$this->styles[$i]:$this->options);
+            }
         }
-        $row = new AsciiRow($this->options,...$cels);
+        $row = new AsciiRow($this->options,$this->styles,...$cels);
         $this->rows[] = $row;
+
+        $this->toString();
     }
 
     public function toString(bool $countLines = false):string{
@@ -30,15 +46,21 @@ class AsciiTable{
                 $result .= preg_replace('/^.+\n/', '', $this->rows[$i]->toString()).($i+1 === $numberOfRows?"":"\n");
             }else{
                 $result .= $this->rows[$i]->toString().($i+1 === $numberOfRows?"":"\n");
+                $this->width = \strlen($result);
             }
         }
         if($countLines){
             $tmp = preg_split('/\n/',$result);
             $length = count($tmp);
             $result = "";
-
+            $rowNumber = 1;
             for($i=0;$i<$length;$i++){
-                $tmp[$i] = $tmp[$i]." <= [$i]";
+                if($tmp[$i][0] !== '|'){
+                    $rowNumber = 1;
+                    continue;
+                }
+                $tmp[$i] = $tmp[$i]." <= [$rowNumber]";
+                $rowNumber++;
             }
             $result = implode("\n",$tmp);
         }

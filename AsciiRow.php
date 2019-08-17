@@ -7,8 +7,10 @@ class AsciiRow{
     private $height;
     private $width = 0;
     private $options;
-    public function __construct(array &$options,AsciiCel ...$cels){
+    private $styles=[];
+    public function __construct(array &$options,array &$styles,AsciiCel ...$cels){
         $this->options = $options;
+        $this->styles = $styles;
         $this->cels = $cels;
         $this->resolveHeight();
         $this->resolveWidth();
@@ -72,6 +74,7 @@ class AsciiRow{
                                     ,$this->cels[$j]->getOPtions()
                                 );
             }
+
         }
 
 
