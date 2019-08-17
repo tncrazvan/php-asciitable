@@ -1,0 +1,19 @@
+{
+    "name": "tncrazvan/asciitable",
+    "description": "Php cli ascii table",
+    "type": "library",
+    "require": {
+        "php": "^7.3"
+    },
+    "require-dev": {
+        "php": "^7.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Razvan Tanase",
+            "email": "tangent.jotey@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
