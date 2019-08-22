@@ -2,6 +2,8 @@
 
 namespace com\github\tncrazvan\AsciiTable;
 
+use com\github\tncrazvan\CatPaw\Tools\Arrays;
+
 class AsciiTable{
     private $rows;
     private $numberOfCols=0;
@@ -11,6 +13,29 @@ class AsciiTable{
     private $styles = [];
     public function __construct(array $options=[]){
         $this->options = $options;
+    }
+
+    public static function resolve($input,bool $countLines=false, array $options=[]):AsciiTable{
+        $table = new AsciiTable($options);
+        if(\is_object($input))
+            $input = get_object_vars($input);
+
+        $table->add("Name","Value");
+        if(($isArray = \is_array($input)) && Arrays::isAssociative($item,$length)){
+            for($i=0;$i<$length;$i++){
+                $table->add($key,AsciiTable::resolve($item)->toString($countLines));
+            }
+        }else{
+            foreach($input as $key => &$item){
+                if($isArray || \is_object($item)){
+                    $table->add($key,AsciiTable::resolve($item)->toString($countLines));
+                }else{
+                    $table->add($key,$item);
+                }
+            }
+        }
+        
+        return $table;
     }
 
     public function style(int $index, array $options):void{
