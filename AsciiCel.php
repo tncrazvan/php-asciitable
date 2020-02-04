@@ -1,6 +1,6 @@
 <?php
 
-namespace com\github\tncrazvan\AsciiTable;
+namespace com\github\tncrazvan\asciitable;
 
 class AsciiCel{
     private $numberOfLines = 0;
