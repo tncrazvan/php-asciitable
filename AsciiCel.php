@@ -12,7 +12,7 @@ class AsciiCel{
     private $data = [];
     private $originalString;
     private $options = [
-        "width" => 100,
+        "width" => 4096,
         "padding-left" => 1,
         "padding-right" => 1,
         "padding-top" => 0,
