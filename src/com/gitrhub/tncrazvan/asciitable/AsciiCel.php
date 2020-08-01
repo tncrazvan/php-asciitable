@@ -39,6 +39,7 @@ class AsciiCel{
             }
         }
 
+        $flatten = [];
         //flatten $lines array
         array_walk_recursive($lines, function($a) use (&$flatten) { $flatten[] = $a; });
         $lines = $flatten;

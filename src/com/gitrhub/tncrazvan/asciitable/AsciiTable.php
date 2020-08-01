@@ -15,29 +15,6 @@ class AsciiTable{
         $this->options = $options;
     }
 
-    public static function resolve($input,bool $countLines=false, array $options=[]):AsciiTable{
-        $table = new AsciiTable($options);
-        if(\is_object($input))
-            $input = get_object_vars($input);
-
-        $table->add("Name","Value");
-        if(($isArray = \is_array($input)) && Arrays::isAssociative($item,$length)){
-            for($i=0;$i<$length;$i++){
-                $table->add($key,AsciiTable::resolve($item)->toString($countLines));
-            }
-        }else{
-            foreach($input as $key => &$item){
-                if($isArray || \is_object($item)){
-                    $table->add($key,AsciiTable::resolve($item)->toString($countLines));
-                }else{
-                    $table->add($key,$item);
-                }
-            }
-        }
-        
-        return $table;
-    }
-
     public function style(int $index, array $options):void{
         $this->styles[$index] = $options;
     }
@@ -106,9 +83,9 @@ class AsciiTable{
 
     private function fixWidths():void{
         $numberOfCols = $this->numberOfCols;
-        $widestCel;
-        $cel;
-        $width;
+        $widestCel=null;
+        $cel=null;
+        $width=null;
         for($i=0;$i<$numberOfCols;$i++){
             $widestCel = $this->getWidestCelByIndex($i);
             $widestCelWidth = $widestCel->getWidth();
