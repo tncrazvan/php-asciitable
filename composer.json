@@ -5,11 +5,10 @@
 	"license": "MIT",
 	"authors": [
 	{
-		"name": "tncrazvan",
+		"name": "Razvan Tanase",
 		"email": "tangent.jotey@gmail.com"
 	}
 	],
-	"minimum-stability": "dev",
 	"require": {
         "php": "^7.3"
 	},
