@@ -11,7 +11,7 @@
 	],
 	"minimum-stability": "dev",
 	"require": {
-        "php": ">=8.0"
+        "php": ">=7.0"
 	},
 	"config": {
 		"preferred-install": "dist"
