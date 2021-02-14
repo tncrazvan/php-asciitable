@@ -15,15 +15,16 @@ class AsciiTable{
         $this->options = $options;
     }
 
-    public function style(int $index, array $options):void{
+    public function style(int $index, array $options):AsciiTable{
         $this->styles[$index] = $options;
+        return $this;
     }
 
     public function getWidth():int{
         return $this->width;
     }
 
-    public function add(...$inputCels):void{
+    public function add(...$inputCels):AsciiTable{
         $cels = [];
         for($i=0,$end=count($inputCels)-1;$i<=$end;$i++){
             if($inputCels[$i] instanceof AsciiCel){
@@ -36,6 +37,7 @@ class AsciiTable{
         $this->rows[] = $row;
 
         $this->toString();
+        return $this;
     }
 
     public function toString(bool $countLines = false):string{
