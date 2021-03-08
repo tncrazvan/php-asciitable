@@ -4,10 +4,10 @@
 	"type": "library",
 	"license": "MIT",
 	"authors": [
-	{
-		"name": "Razvan Tanase",
-		"email": "tangent.jotey@gmail.com"
-	}
+		{
+			"name": "Razvan Tanase",
+			"email": "tangent.jotey@gmail.com"
+		}
 	],
 	"minimum-stability": "dev",
 	"require": {
@@ -18,7 +18,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"":["src","test","vendor"]
+			"":["src"]
 		}
 	}
 }
