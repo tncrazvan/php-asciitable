@@ -1,6 +1,6 @@
 <?php
 
-namespace net\razsharen\asciitable;
+namespace net\razshare\asciitable;
 
 class AsciiRow{
     private $cels = [];

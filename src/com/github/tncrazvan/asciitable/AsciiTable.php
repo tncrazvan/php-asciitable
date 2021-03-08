@@ -1,8 +1,8 @@
 <?php
 
-namespace net\razsharen\asciitable;
+namespace net\razshare\asciitable;
 
-use net\razsharen\catpaw\tools\Arrays;
+use net\razshare\catpaw\tools\Arrays;
 
 class AsciiTable{
     private $rows;
