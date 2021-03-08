@@ -1,6 +1,6 @@
 <?php
 require_once '../vendor/autoload.php';
-use com\github\tncrazvan\asciitable\AsciiTable;
+use net\razsharen\asciitable\AsciiTable;
 
 $table = new AsciiTable();
 

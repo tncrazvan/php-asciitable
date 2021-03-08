@@ -1,6 +1,6 @@
 <?php
 
-namespace com\github\tncrazvan\asciitable;
+namespace net\razsharen\asciitable;
 
 class AsciiRow{
     private $cels = [];

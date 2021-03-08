@@ -1,8 +1,8 @@
 <?php
 
-namespace com\github\tncrazvan\asciitable;
+namespace net\razsharen\asciitable;
 
-use com\github\tncrazvan\catpaw\tools\Arrays;
+use net\razsharen\catpaw\tools\Arrays;
 
 class AsciiTable{
     private $rows;
