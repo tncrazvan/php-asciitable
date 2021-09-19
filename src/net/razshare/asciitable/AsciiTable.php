@@ -2,12 +2,11 @@
 
 namespace net\razshare\asciitable;
 
-use net\razshare\catpaw\tools\Arrays;
-
 class AsciiTable{
     private $rows;
     private $numberOfCols=0;
     private $masterRow;
+    private $globalRowNumber = 1;
     private $options;
     private $width=null;
     private $styles = [];
@@ -40,7 +39,7 @@ class AsciiTable{
         return $this;
     }
 
-    public function toString(bool $countLines = false):string{
+    public function toString(bool $countLines = false, bool $globalCountLines = false):string{
         $this->findRowWithMostCels();
         $this->fixWidths();
         $result="";
@@ -57,14 +56,17 @@ class AsciiTable{
             $tmp = preg_split('/\n/',$result);
             $length = count($tmp);
             $result = "";
+
             $rowNumber = 1;
+
             for($i=0;$i<$length;$i++){
                 if($tmp[$i][0] !== '|'){
                     $rowNumber = 1;
                     continue;
                 }
-                $tmp[$i] = $tmp[$i]." <= [$rowNumber]";
+                $tmp[$i] = $tmp[$i].($globalCountLines?" <= [$this->globalRowNumber]":" <= [$rowNumber]");
                 $rowNumber++;
+                $this->globalRowNumber++;
             }
             $result = implode("\n",$tmp);
         }
