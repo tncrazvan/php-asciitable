@@ -1,7 +1,7 @@
 <?php
 chdir(dirname(__FILE__));
 require_once '../vendor/autoload.php';
-use net\razshare\asciitable\AsciiTable;
+use Razshare\AsciiTable\AsciiTable;
 
 $table = new AsciiTable();
 

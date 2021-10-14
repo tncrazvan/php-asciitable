@@ -11,14 +11,14 @@
 	],
 	"minimum-stability": "dev",
 	"require": {
-        "php": ">=7.0"
+        "php": ">=8.0"
 	},
 	"config": {
 		"preferred-install": "dist"
 	},
 	"autoload": {
 		"psr-4": {
-			"":["src"]
+			"Razshare\\AsciiTable\\":["src/"]
 		}
 	}
 }
